@@ -1,0 +1,9 @@
+fieldset {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, max-content);
+}
+
+fieldset button {
+    grid-column: 1/span 2;
+}

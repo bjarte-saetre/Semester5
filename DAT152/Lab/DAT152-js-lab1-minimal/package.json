@@ -1,0 +1,13 @@
+{
+  "name": "dat152-js-lab1-minimal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/task1/task1.js && node --check public/task2/task2.js && node --check public/task3/task3.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

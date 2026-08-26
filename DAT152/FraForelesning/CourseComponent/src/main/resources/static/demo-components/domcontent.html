@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+<meta name="Author" content="Bjarte Wang-Kileng" />
+<link rel="shortcut icon" href="#">
+<link href="../main.css" rel="stylesheet" type="text/css" />
+<title>Custom tag and data</title>
+<script src="components/courseinfo-domcontent/courseinfo-domcontent.js" type='module'></script>
+
+</head>
+
+<body>
+    <h1>Custom tag and attributes</h1>
+
+    <p>This demonstration show a custom element class that access DOM content of custom element tag.</p>
+
+    <bki2026-courseinfo></bki2026-courseinfo>
+    <bki2026-courseinfo>
+        <ul>
+            <li>DAT151</li>
+            <li>Database management</li>
+            <li>Bjarte Wang-Kileng</li>
+        </ul>
+    </bki2026-courseinfo>
+
+    <p>A component should be isolated from the main document, both
+        CSS and JavaScript, and should be loaded into the document using
+        a single entry point.</p>
+</body>
+</html>

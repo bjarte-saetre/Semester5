@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+C:\Users\tbjar\Documents\GitHub\Semester5\DAT152\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+3285937088.index
+2427283010.index

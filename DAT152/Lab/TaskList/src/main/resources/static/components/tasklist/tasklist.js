@@ -37,6 +37,8 @@ class TaskList extends HTMLElement {
         this.shadowRoot.append(template.content.cloneNode(true));
 
         this.allstatuses = [];
+        this.changestatusCallbacks = [];
+        this.deletetaskCallbacks = [];
     }
 
     /**
@@ -53,9 +55,7 @@ class TaskList extends HTMLElement {
      * @param {function} callback
      */
     addChangestatusCallback(callback) {
-        /**
-         * Fill inn the code
-         */
+        this.changestatusCallbacks.push(callback);
     }
 
     /**
@@ -64,9 +64,7 @@ class TaskList extends HTMLElement {
      * @param {function} callback
      */
     addDeletetaskCallback(callback) {
-        /**
-         * Fill inn the code
-         */
+        this.deletetaskCallbacks.push(callback);
     }
 
     /**
@@ -109,9 +107,38 @@ class TaskList extends HTMLElement {
             option.value = status;
             option.textContent = status;
             option.selected = false;
+            option.removeAttribute("selected");
 
             select.append(option);
         }
+
+        select.addEventListener("change", () => {
+            const newStatus = select.value;
+            const currentStatus = cells[1].textContent;
+
+            if (newStatus !== "0" && newStatus !== currentStatus) {
+                const approved = window.confirm(`Set '${task.title}' to ${newStatus}?`);
+
+                if (approved) {
+                    for (const callback of this.changestatusCallbacks) {
+                        callback(task.id, newStatus);
+                    }
+                }
+            }
+
+            select.value = "0";
+        });
+
+        const removeButton = row.querySelector("button");
+        removeButton.addEventListener("click", () => {
+            const approved = window.confirm(`Delete task '${task.title}'?`);
+
+            if (approved) {
+                for (const callback of this.deletetaskCallbacks) {
+                    callback(task.id);
+                }
+            }
+        });
 
         // Nyeste oppgave skal ligge øverst
         table.querySelector("tbody").prepend(row);
@@ -122,9 +149,12 @@ class TaskList extends HTMLElement {
      * @param {Object} task - Object with attributes {'id':taskId,'status':newStatus}
      */
     updateTask(task) {
-        /**
-         * Fill inn the code
-         */
+        const row = this.shadowRoot.querySelector(`tr[data-task-id="${task.id}"]`);
+
+        if (row !== null) {
+            const cells = row.querySelectorAll("td");
+            cells[1].textContent = task.status;
+        }
     }
 
     /**
@@ -132,9 +162,16 @@ class TaskList extends HTMLElement {
      * @param {Integer} task - ID of task to remove
      */
     removeTask(id) {
-        /**
-         * Fill inn the code
-         */
+        const container = this.shadowRoot.querySelector("#tasklist");
+        const row = container.querySelector(`tr[data-task-id="${id}"]`);
+
+        if (row !== null) {
+            row.remove();
+        }
+
+        if (this.getNumtasks() === 0) {
+            container.textContent = "";
+        }
     }
 
     /**
@@ -142,9 +179,7 @@ class TaskList extends HTMLElement {
      * @return {Number} - Number of tasks on display in view
      */
     getNumtasks() {
-        /**
-         * Fill inn the code
-         */
+        return this.shadowRoot.querySelectorAll("#tasklist tbody tr").length;
     }
 }
 customElements.define('task-list', TaskList);

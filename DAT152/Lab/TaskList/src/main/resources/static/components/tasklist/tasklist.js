@@ -33,9 +33,10 @@ class TaskList extends HTMLElement {
     constructor() {
         super();
 
-        /**
-         * Fill inn rest of the code
-         */
+        this.attachShadow({ mode: "open" });
+        this.shadowRoot.append(template.content.cloneNode(true));
+
+        this.allstatuses = [];
     }
 
     /**
@@ -43,9 +44,7 @@ class TaskList extends HTMLElement {
      * @param {Array} list with all possible task statuses
      */
     setStatuseslist(allstatuses) {
-        /**
-         * Fill inn the code
-         */
+        this.allstatuses = allstatuses;
     }
 
     /**

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Author" content="Bjarte Wang-Kileng" />
+<link href="../main.css" rel="stylesheet" type="text/css" />
+
+<script src="js/endrun.js" defer></script>
+<title>Demo with long running JavaScript</title>
+</head>
+
+<body>
+    <h1>Demo with long running JavaScript</h1>
+    <p>All output from the scripts is written to the web console.</p>
+    <p class="liste">The JavaScript code is here:</p>
+    <ul>
+        <li><a href="js/increment.js">increment.js</a></li>
+        <li><a href="../common/sleep.js">sleep.js</a></li>
+        <li><a href="js/longrun.js">longrun.js</a></li>
+        <li><a href="js/endrun.js">endrun.js</a></li>
+    </ul>
+
+    <p>
+        Number is: <span id="number"></span>
+    </p>
+    <p>
+        <button type="button" id="bt">Increment</button>
+    </p>
+
+    <p>Some HTML before running time consuming code.</p>
+
+    <script src="js/increment.js"></script>
+    <script src="../common/sleep.js"></script>
+    <script src="js/longrun.js"></script>
+
+    <p>Some HTML after running time consuming code.</p>
+</body>
+</html>

@@ -1,0 +1,209 @@
+html:lang(no) {
+    quotes: "«" "»" '"' '"'
+}
+
+dt {
+    font-weight: bold
+}
+
+dt:after {
+    content: ":";
+    font-weight: bold
+}
+
+/* dl { display:compact } */
+.viktig {
+    color: red;
+    border: 2px solid red;
+}
+
+body {
+    background-color: #FFFFFF;
+    color: black;
+    font-family: Arial, sans-serif;
+    /*  font-family: sans-serif; */
+    /*  font-family: verdana, arial, sans-serif; */
+    /*  font-family: "liberation sans",verdana, arial,sans-serif; */
+}
+
+/* Redefinerer stil på lenker */
+a:link {
+    text-decoration: none;
+    color: blue;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #9400D3;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+a:active {
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+a:visited:hover {
+    color: white;
+    background-color: #9400D3;
+    padding: 0px;
+    margin: 0px;
+}
+
+a:link:hover {
+    color: white;
+    background-color: blue;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* Overskrifter */
+h1 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    font-style: oblique;
+    text-align: center;
+}
+
+/* Tabellting */
+table.senter {
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+/*caption { background-color: red; color: white;} */
+table.senter>caption {
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+th, td {
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    empty-cells: show;
+}
+
+th, td {
+    vertical-align: top
+}
+
+table.c td, table.c th, th.c, td.c {
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+colgroup.en, colgroup.en th, colgroup.en td {
+    white-space: nowrap;
+}
+
+col.c, col.c th, col.c td {
+    text-align: center
+}
+
+table.base {
+    border: solid;
+}
+
+table.st th {
+    white-space: nowrap;
+}
+
+table {
+    border-collapse: collapse;
+    empty-cells: show;
+}
+
+caption {
+    background-color: red;
+    color: white;
+}
+
+/* Ønsker konstruksjoner som fjenrer avstand foran lister etc */
+p.liste {
+    margin-bottom: 0.1mm
+}
+
+p.liste+* {
+    margin-top: 0em
+}
+
+p.liste+*>*:first-child {
+    margin-top: 0em
+}
+
+p.liste+*>*:first-child>*:first-child {
+    margin-top: 0em
+}
+
+p.liste+div.demo {
+    margin-top: 0.5em;
+}
+
+p.liste+div.kode {
+    margin-top: 0.5em;
+}
+
+p.liste+pre.kode {
+    margin-top: 0.5em;
+}
+
+p.liste+table {
+    margin-top: 0.5em;
+}
+
+.innercode {
+    background-color: #EEE;
+    padding: 10px;
+}
+
+.valid img, img.valid {
+    border: 0px;
+    width: 88px;
+    height: 31px;
+    padding: 0px
+}
+
+.a {
+    background: #DDD;
+}
+
+var, code {
+    white-space: nowrap;
+}
+
+blockquote {
+    font-style: italic;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+td>p:first-child {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.last {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.u {
+    text-decoration: underline;
+}
+
+ol.nummer li {
+    list-style-type: decimal
+}

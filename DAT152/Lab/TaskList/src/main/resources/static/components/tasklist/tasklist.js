@@ -75,12 +75,46 @@ class TaskList extends HTMLElement {
      * @param {Object} task - Object representing a task
      */
     showTask(task) {
-        /**
-         * Fill inn the code
-         */
-        if (tasktable.) {
+        const container = this.shadowRoot.querySelector("#tasklist");
 
+        // Opprett tabellen første gang showTask blir kjørt
+        let table = container.querySelector("table");
+
+        if (table === null) {
+            const tableClone = tasktable.content.cloneNode(true);
+            container.append(tableClone);
+
+            table = container.querySelector("table");
         }
+
+        // Lag en ny oppgaverad fra taskrow-templaten
+        const rowClone = taskrow.content.cloneNode(true);
+        const row = rowClone.querySelector("tr");
+
+        // Lagre ID-en på raden til updateTask() og removeTask() senere
+        row.dataset.taskId = task.id;
+
+        // De to første td-elementene er tittel og status
+        const cells = row.querySelectorAll("td");
+        cells[0].textContent = task.title;
+        cells[1].textContent = task.status;
+
+        // Fyll nedtrekkslisten med de mulige statusene
+        const select = row.querySelector("select");
+        const modifyOption = select.querySelector("option");
+
+        for (const status of this.allstatuses) {
+            const option = modifyOption.cloneNode(true);
+
+            option.value = status;
+            option.textContent = status;
+            option.selected = false;
+
+            select.append(option);
+        }
+
+        // Nyeste oppgave skal ligge øverst
+        table.querySelector("tbody").prepend(row);
     }
 
     /**

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="data:," />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Author" content="Bjarte Wang-Kileng" />
+    <link href="../main.css" rel="stylesheet" type="text/css" />
+    <script src="js/ajax9.js" defer></script>
+    <style type="text/css">
+    .hidden { display: none }
+    </style>
+
+    <title>Download progress</title>
+</head>
+
+<body>
+    <h1>Download progress</h1>
+
+    <p>The button below will use Ajax to download a large document from a webserver.</p>
+
+    <p><button type="button" id="requestDocument">Fetch document</button>
+    <progress class="hidden" id="progress" max="100">0%</progress></p>
+    <p data-status class="hidden">Loading of document has finished.</p>
+</body>
+
+</html>

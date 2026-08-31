@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="#">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="Author" content="Bjarte Wang-Kileng" />
+    <link href="../main.css" rel="stylesheet" type="text/css" />
+    <script src="js/ws2.js" type="module"></script>
+
+    <title>Websockets and server sent data</title>
+</head>
+
+<body>
+    <h1>Websockets and server sent data</h1>
+    
+    <p>The <em>Start</em> button opens the connection. The server will then every five second send a random intger to the client.
+    The <em>stop</em> button will close the connection and stop the server random number generator.</p>
+    <p>Received from server: <span id="randomnumber">No number yet</span></p>
+    <p>
+        <button type="button" id="start">Start</button><button type="button" id="stop">Stop</button>
+    </p>
+</body>
+
+</html>

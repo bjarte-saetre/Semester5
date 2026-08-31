@@ -1,0 +1,9 @@
+{
+    "responseStatus": true,
+    "student": {
+        "firstname": "Ola",
+        "id": 6,
+        "lastname": "Olsen",
+        "level": "bachelor"
+    }
+}

@@ -26,7 +26,7 @@ public class FlowManager {
 		pages.put("viewbook", "/viewbook.jsp");
 		pages.put("viewbooks", "/viewbooks.jsp");
 		// new features
-//		pages.put("addauthorform", "");				//TODO
+		pages.put("addauthorform", "/addauthor.jsp");
 		pages.put("addauthor", "/addauthor.jsp");
 //		pages.put("deletebookconfirm", "");			//TODO
 		pages.put("deletebook", "/viewbooks.jsp");

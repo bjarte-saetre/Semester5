@@ -15,6 +15,7 @@ public class DeleteBookAction implements ControllerAction {
         BookDAO bookDAO = new BookDAO();
         String isbn = request.getParameter("isbn");
         bookDAO.deleteBook(isbn);
+        request.setAttribute("books", bookDAO.getAllBooks());
         return ControllerAction.SUCCESS;
 
     }

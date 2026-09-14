@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="icon" href="data:," />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Author" content="Bjarte Wang-Kileng" />
+<link href="../main.css" rel="stylesheet" type="text/css" />
+<script src="js/ajax10.js" type="module"></script>
+<style type="text/css">
+.hidden { display: none }
+</style>
+
+<title>Fetch blocking demo</title>
+</head>
+
+<body>
+    <h1>Fetch blocking demo</h1>
+
+    <p>Output only in the web console only.</p>
+    <p>The event handler that runs when the docuemnt as arrived runs for a long time. Fetching the document from server does not
+       block the main thread, but the event handler does.
+    </p>
+    
+    <increment-demo></increment-demo>
+    <p><button type="button" id="requestDocument">Fetch document</button>
+    <p data-status class="hidden">Loading of document has finished.</p>
+</body>
+
+</html>

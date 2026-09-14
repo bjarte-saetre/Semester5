@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="#">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Author" content="Bjarte Wang-Kileng" />
+<link href="../main.css" rel="stylesheet" type="text/css" />
+<script src="js/cors.js" type="module"></script>
+
+<title>Cross-origin for simple request</title>
+</head>
+
+<body>
+    <h1>Cross-origin for simple request</h1>
+
+    <p>All output is to the web console only.</p>
+    <p>Web server is configured to respond with header:</p>
+    <pre class="demo">Access-Control-Allow-Origin "*"</pre>
+    <p>
+        Click the button to fetch the document <a href="https://eple.hvl.no/fag/dat152/h2024/sop/demo2.txt">https://eple.hvl.no/fag/dat152/h2024/sop/demo2.txt</a>:
+    </p>
+    <p>
+        <button type="button" id="requestData">Fetch document</button>
+    </p>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ no\hvl\dat152\util\MyContextListener.class
 no\hvl\dat152\controller\FrontController.class
 no\hvl\dat152\action\UpdateBookFormAction.class
 no\hvl\dat152\action\ControllerAction.class
+no\hvl\dat152\action\DeleteBookAction.class
 no\hvl\dat152\dao\BookDAO.class
 no\hvl\dat152\action\ViewBooksAction.class
 no\hvl\dat152\action\UpdateBookAction.class

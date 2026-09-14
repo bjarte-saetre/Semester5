@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Mon Sep 14 16:39:48 CEST 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-01a0-a05c-2441-00001f2d67c0 
+Mon Sep 14 17:01:11 CEST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-01a0-a06f-b743-00001f2cdee8 
 on database directory memory:C:\Users\tbjar\Documents\GitHub\Semester5\DAT152\Lab\Lab2a\library-flowmanager\DAT152 with class loader ParallelWebappClassLoader
   context: library
   delegate: false

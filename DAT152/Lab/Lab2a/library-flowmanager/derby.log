@@ -1,0 +1,18 @@
+----------------------------------------------------------------
+Mon Sep 14 16:39:48 CEST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-01a0-a05c-2441-00001f2d67c0 
+on database directory memory:C:\Users\tbjar\Documents\GitHub\Semester5\DAT152\Lab\Lab2a\library-flowmanager\DAT152 with class loader ParallelWebappClassLoader
+  context: library
+  delegate: false
+----------> Parent Classloader:
+java.net.URLClassLoader@3b95a09c
+ 
+Loaded from file:/C:/Users/tbjar/Documents/apache-tomcat-10.1.59/webapps/library/WEB-INF/lib/derby-10.16.1.1.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=21.0.12+8-LTS
+user.dir=C:\Users\tbjar\Documents\GitHub\Semester5\DAT152\Lab\Lab2a\library-flowmanager
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ViewUsers Page</title>
+<link rel="stylesheet" type="text/css" media="all" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<main class="container">
+	<div><a href="/">Home</a></div>
+	<div th:fragment="header">
+		<h1>Registered Users</h1>
+	</div>
+	<table>
+		<tr th:each="user : ${users}">
+            <td><img th:src="@{${user.photoUrl}}" alt="" width="100" height="90"/></td>
+            <td><a th:href="@{'/viewuser?email=' + ${user.email}}" th:text="${user.name}"></a></td>
+        </tr>
+	</table>
+</main>
+</body>
+</html>

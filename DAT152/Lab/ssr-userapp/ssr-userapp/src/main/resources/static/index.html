@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+<link rel="stylesheet" type="text/css" media="all" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<main class="container">
+	<div th:fragment="header">
+		<h1>User Profile Manager</h1>
+	</div>
+	<div class="text-left" th:fragment="menu">
+		<p>
+			<a href="/adduser">Add User</a> | 
+			<a href="/viewusers">View Users</a>
+		</p>
+		
+	</div>
+</main>
+</body>
+</html>

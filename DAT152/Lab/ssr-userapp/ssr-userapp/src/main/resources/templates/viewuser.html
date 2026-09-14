@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ViewUser Page</title>
+	<link rel="stylesheet" type="text/css" media="all" href="/css/styles.css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<main class="container">
+	<div><a href="/">Home</a></div>
+	
+	<div th:fragment="header">
+		<h1 th:text="${user.name}"></h1>		
+	</div>
+	<table>
+		<tr>
+			<td><img th:src="@{${user.photoUrl}}" alt="" width="150" height="140"/></td><td></td>
+		</tr>
+	    <tr>
+	    	<td><strong>Email:</strong></td><td th:text="${user.email}"></td>
+	    </tr>
+	    <tr>
+	    	<td><strong>Country:</strong></td><td th:text="${user.country}"></td>
+	    </tr>
+	</table>
+</main>
+</body>
+</html>

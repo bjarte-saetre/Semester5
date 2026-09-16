@@ -16,14 +16,11 @@ template.innerHTML = `
     <group21-tasklist></group21-tasklist>
     <group21-taskbox></group21-taskbox>`;
 
-/**
- * Parent component for the task application.
- *
- * TODO: Implement the orchestration and every Ajax request in this class.
- * TaskView may communicate with TaskList and TaskBox only through their APIs.
- */
+// TaskView er hovedkomponenten som kobler TaskList og TaskBox til serveren.
+// Alle fetch-kallene i oppgaven skal ligge i denne komponenten.
 class TaskView extends HTMLElement {
 
+    // Lager Shadow DOM og finner komponentene og elementene som skal brukes senere.
     constructor() {
         super();
 
@@ -38,22 +35,16 @@ class TaskView extends HTMLElement {
         this.initialized = false;
     }
 
-    /**
-     * TODO:
-     * 1. Prevent initialization from running more than once.
-     * 2. Read this.dataset.serviceurl; do not hard-code the API address.
-     * 3. Register TaskList callbacks for status changes and deletion.
-     * 4. Register TaskBox's callback for new tasks.
-     * 5. Open TaskBox when New task is clicked.
-     * 6. Fetch statuses before tasks, then enable New task.
-     * 7. Handle errors through the message element.
-     */
+    // Kobler komponentene sammen og henter de første dataene fra serveren.
     async connectedCallback() {
+        // Hindrer at oppsettet blir gjort flere ganger.
         if (this.initialized) {
             return;
         }
 
         this.initialized = true;
+
+        // Leser API-adressen fra data-serviceurl i index.html.
         this.serviceurl = this.dataset.serviceurl;
 
         if (!this.serviceurl) {
@@ -61,37 +52,39 @@ class TaskView extends HTMLElement {
             return;
         }
 
+        // TaskList gir beskjed til TaskView når statusen skal endres.
         this.tasklist.addChangestatusCallback((id, newStatus) => {
-            this.changeTaskStatus(id, newStatus); //når statusen endres i tasklist
+            this.changeTaskStatus(id, newStatus);
         });
 
+        // TaskList gir beskjed til TaskView når en oppgave skal slettes.
         this.tasklist.addDeletetaskCallback((id) => {
-            this.deleteTask(id); //når en oppgave slettes
+            this.deleteTask(id);
         });
 
-        this.tasklist.addNewtaskCallback((task) => {
-            this.tasklist.addTask(task);
+        // TaskBox gir den nye oppgaven til TaskView.
+        this.taskbox.addNewtaskCallback((task) => {
+            this.addTask(task);
         });
 
+        // Åpner TaskBox når brukeren trykker på New task.
         this.newTaskButton.addEventListener("click", () => {
             this.taskbox.show();
         });
 
         try {
+            // Statusene må hentes før oppgavene og TaskBox åpnes.
             await this.loadStatuses();
             await this.loadTasks();
 
             this.newTaskButton.disabled = false;
             this.updateMessage();
-        } catch(error) {
+        } catch (error) {
             this.showError(`Could not load data: ${error.message}`);
         }
     }
 
-    /**
-     * GET {serviceurl}/allstatuses.
-     * On responseStatus=true, pass allstatuses to both child components.
-     */
+    // Henter alle statusene og sender dem videre til TaskList og TaskBox.
     async loadStatuses() {
         const response = await fetch(`${this.serviceurl}/allstatuses`);
 
@@ -109,12 +102,9 @@ class TaskView extends HTMLElement {
         this.taskbox.setStatuseslist(data.allstatuses);
     }
 
-    /**
-     * GET {serviceurl}/tasklist.
-     * On responseStatus=true, call tasklist.showTask for every returned task.
-     */
+    // Henter alle oppgavene og viser dem én etter én i TaskList.
     async loadTasks() {
-        const respone = await fetch(`${this.serviceurl}/tasklist`);
+        const response = await fetch(`${this.serviceurl}/tasklist`);
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
@@ -131,11 +121,7 @@ class TaskView extends HTMLElement {
         }
     }
 
-    /**
-     * POST {serviceurl}/task with JSON {title, status}.
-     * On success, display response.task, close TaskBox, and update the message.
-     * @param {{title: string, status: string}} task
-     */
+    // Sender en ny oppgave til serveren og viser den når den er lagret.
     async addTask(task) {
         try {
             const response = await fetch(`${this.serviceurl}/task`, {
@@ -143,7 +129,7 @@ class TaskView extends HTMLElement {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(task) //JavaScript-objektet om til JSON-tekst.
+                body: JSON.stringify(task)
             });
 
             if (!response.ok) {
@@ -164,22 +150,16 @@ class TaskView extends HTMLElement {
         }
     }
 
-    /**
-     * PUT {serviceurl}/task/{id} with JSON {status: newStatus}.
-     * Only update TaskList when responseStatus is true.
-     * @param {number} id
-     * @param {string} newStatus
-     */
+    // Sender den nye statusen til serveren og oppdaterer riktig tabellrad.
     async changeTaskStatus(id, newStatus) {
-
         try {
-            const response = await fetch(`${this.serviceurl}/task${id}`, {
+            const response = await fetch(`${this.serviceurl}/task/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    status:newStatus
+                    status: newStatus
                 })
             });
 
@@ -189,7 +169,7 @@ class TaskView extends HTMLElement {
 
             const data = await response.json();
 
-            if (!data.responseStatus || !data.task) {
+            if (!data.responseStatus) {
                 throw new Error("The server could not change the status.");
             }
 
@@ -200,18 +180,12 @@ class TaskView extends HTMLElement {
         } catch (error) {
             this.showError(`Could not change task status: ${error.message}`);
         }
-
     }
 
-    /**
-     * DELETE {serviceurl}/task/{id}.
-     * Only remove the task from TaskList when responseStatus is true.
-     * @param {number} id
-     */
+    // Ber serveren slette oppgaven og fjerner deretter raden fra TaskList.
     async deleteTask(id) {
-
         try {
-            const response = await fetch(`${this.serviceurl}/task${id}`, {
+            const response = await fetch(`${this.serviceurl}/task/${id}`, {
                 method: "DELETE"
             });
 
@@ -221,25 +195,19 @@ class TaskView extends HTMLElement {
 
             const data = await response.json();
 
-            if (!data.responseStatus || !data.task) {
+            if (!data.responseStatus) {
                 throw new Error("The server could not delete the task.");
             }
 
             this.tasklist.removeTask(data.id);
             this.updateMessage();
-
         } catch (error) {
             this.showError(`Could not delete task: ${error.message}`);
         }
-
     }
 
-    /**
-     * Use tasklist.getNumtasks(). Show "No tasks were found." for zero,
-     * otherwise "Found N task(s).". Insert dynamic text with textContent.
-     */
+    // Viser hvor mange oppgaver som finnes i TaskList.
     updateMessage() {
-
         const numberOfTasks = this.tasklist.getNumtasks();
 
         if (numberOfTasks === 0) {
@@ -255,10 +223,9 @@ class TaskView extends HTMLElement {
 
         this.messageElement.textContent =
             `Found ${numberOfTasks} ${taskWord}.`;
-
     }
 
-    /** @param {string} message */
+    // Viser en lesbar feilmelding øverst på siden.
     showError(message) {
         this.messageElement.textContent = message;
     }

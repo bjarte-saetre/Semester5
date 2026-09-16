@@ -25,14 +25,11 @@ taskrow.innerHTML = `
         <td><button type="button">Remove</button></td>
     </tr>`;
 
-/**
- * TaskList from the previous JavaScript lab.
- *
- * This component owns the task table and all event listeners in it.
- * It must not contain fetch/Ajax code or refer to TaskView or TaskBox.
- */
+// TaskList viser oppgavene i en tabell og håndterer knappene i tabellen.
+// Komponenten skal ikke kontakte API-et selv. Det er TaskView som bruker fetch.
 class TaskList extends HTMLElement {
 
+    // Oppretter komponentens Shadow DOM og gjør klar lister for statuser og callbacks.
     constructor() {
         super();
 
@@ -44,39 +41,43 @@ class TaskList extends HTMLElement {
         this.deletetaskCallbacks = [];
     }
 
-    /** @param {Array<string>} allstatuses */
+    // Lagrer statusene som senere skal vises i nedtrekkslisten for hver oppgave.
     setStatuseslist(allstatuses) {
         this.allstatuses = allstatuses;
     }
 
-    /** @param {function(number, string): void} callback */
+    // Lagrer en funksjon som skal kjøres når brukeren velger en ny status.
     addChangestatusCallback(callback) {
         this.changestatusCallbacks.push(callback);
     }
 
-    /** @param {function(number): void} callback */
+    // Lagrer en funksjon som skal kjøres når brukeren vil slette en oppgave.
     addDeletetaskCallback(callback) {
         this.deletetaskCallbacks.push(callback);
     }
 
-    /** @param {{id: number, title: string, status: string}} task */
+    // Lager en ny tabellrad og viser oppgaven i tabellen.
     showTask(task) {
         const container = this.shadowRoot.querySelector("#tasklist");
         let table = container.querySelector("table");
 
+        // Tabellen lages bare første gang en oppgave skal vises.
         if (table === null) {
             container.append(tasktable.content.cloneNode(true));
             table = container.querySelector("table");
         }
 
+        // Lager en ny rad fra taskrow-templaten og lagrer oppgavens ID på raden.
         const rowClone = taskrow.content.cloneNode(true);
         const row = rowClone.querySelector("tr");
         row.dataset.taskId = task.id;
 
+        // Skriver oppgavens tittel og nåværende status i de to første cellene.
         const cells = row.querySelectorAll("td");
         cells[0].textContent = task.title;
         cells[1].textContent = task.status;
 
+        // Fyller nedtrekkslisten med alle statusene som kom fra setStatuseslist().
         const select = row.querySelector("select");
         const modifyOption = select.querySelector("option");
 
@@ -89,6 +90,7 @@ class TaskList extends HTMLElement {
             select.append(option);
         }
 
+        // Spør om bekreftelse og varsler TaskView når statusen blir endret.
         select.addEventListener("change", () => {
             const newStatus = select.value;
             const currentStatus = cells[1].textContent;
@@ -106,6 +108,7 @@ class TaskList extends HTMLElement {
             select.value = "0";
         });
 
+        // Spør om bekreftelse og varsler TaskView når Remove-knappen blir trykket.
         const removeButton = row.querySelector("button");
         removeButton.addEventListener("click", () => {
             const approved = window.confirm(`Delete task '${task.title}'?`);
@@ -117,10 +120,11 @@ class TaskList extends HTMLElement {
             }
         });
 
+        // Legger den nye oppgaven øverst i tabellen.
         table.querySelector("tbody").prepend(row);
     }
 
-    /** @param {{id: number, status: string}} task */
+    // Finner en oppgave ved hjelp av ID-en og oppdaterer statusen som vises.
     updateTask(task) {
         const row = this.shadowRoot.querySelector(`tr[data-task-id="${task.id}"]`);
 
@@ -129,7 +133,7 @@ class TaskList extends HTMLElement {
         }
     }
 
-    /** @param {number} id */
+    // Fjerner oppgaven med riktig ID og fjerner tabellen dersom listen blir tom.
     removeTask(id) {
         const container = this.shadowRoot.querySelector("#tasklist");
         const row = container.querySelector(`tr[data-task-id="${id}"]`);
@@ -143,7 +147,7 @@ class TaskList extends HTMLElement {
         }
     }
 
-    /** @returns {number} */
+    // Teller og returnerer hvor mange oppgaver som vises i tabellen.
     getNumtasks() {
         return this.shadowRoot.querySelectorAll("#tasklist tbody tr").length;
     }

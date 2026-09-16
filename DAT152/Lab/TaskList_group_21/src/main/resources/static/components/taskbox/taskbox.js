@@ -16,14 +16,11 @@ template.innerHTML = `
         <p><button type="submit">Add task</button></p>
     </dialog>`;
 
-/**
- * Modal component used to collect the title and status of a new task.
- *
- * TODO: Implement this class. TaskBox owns every element and event listener
- * inside the dialog. It must not use fetch/Ajax or access TaskList/TaskView.
- */
+// TaskBox viser dialogboksen der brukeren kan skrive inn en ny oppgave.
+// Den sender oppgaven videre med callbacks, men kontakter ikke serveren selv.
 class TaskBox extends HTMLElement {
 
+    // Lager Shadow DOM, finner elementene i dialogen og kobler til knappene.
     constructor() {
         super();
 
@@ -37,9 +34,12 @@ class TaskBox extends HTMLElement {
         this.closeButton = this.shadowRoot.querySelector("#close");
         this.newtaskCallbacks = [];
 
+        // Lukker dialogen når brukeren trykker på krysset.
         this.closeButton.addEventListener("click", () => {
-            this.close()
+            this.close();
         });
+
+        // Kontrollerer tittelen og sender den nye oppgaven videre til TaskView.
         this.addButton.addEventListener("click", () => {
             const title = this.titleInput.value.trim();
 
@@ -48,7 +48,11 @@ class TaskBox extends HTMLElement {
                 this.titleInput.focus();
                 return;
             }
-            const task = {title: title, status: this.statusSelect.value};
+
+            const task = {
+                title,
+                status: this.statusSelect.value
+            };
 
             for (const callback of this.newtaskCallbacks) {
                 callback(task);
@@ -56,22 +60,16 @@ class TaskBox extends HTMLElement {
         });
     }
 
-    /** Open the modal dialog. @public */
+    // Tømmer det gamle tekstfeltet og åpner dialogen.
     show() {
         this.titleInput.value = "";
         this.dialog.showModal();
         this.titleInput.focus();
     }
 
-    /**
-     * Populate SELECT with possible statuses using createElement/textContent.
-     * Do not use server data with innerHTML.
-     * @public
-     * @param {Array<string>} list
-     */
+    // Tømmer statusmenyen og legger inn statusene som kom fra serveren.
     setStatuseslist(list) {
-
-        this.statusSelect.replaceChildren(); //fjerner alle eksisterende <option>-element
+        this.statusSelect.replaceChildren();
 
         for (const status of list) {
             const option = document.createElement("option");
@@ -79,22 +77,14 @@ class TaskBox extends HTMLElement {
             option.textContent = status;
             this.statusSelect.append(option);
         }
-
     }
 
-    /**
-     * Store a callback that receives {title, status} on Add task.
-     * @public
-     * @param {function({title: string, status: string}): void} callback
-     */
+    // Lagrer en funksjon som skal kjøres når brukeren legger til en oppgave.
     addNewtaskCallback(callback) {
-
         this.newtaskCallbacks.push(callback);
-
-
     }
 
-    /** Close the modal through the HTMLDialogElement API. @public */
+    // Lukker dialogen.
     close() {
         this.dialog.close();
     }

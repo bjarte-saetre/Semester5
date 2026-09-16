@@ -1,0 +1,26 @@
+:host {
+    display: contents;
+}
+
+dialog {
+    border: 3px solid black;
+    padding: 16px;
+}
+
+dialog::backdrop {
+    background: rgb(0 0 0 / 25%);
+}
+
+#close {
+    cursor: pointer;
+    float: right;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+dialog > div {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: max-content 1fr;
+    margin-top: 12px;
+}

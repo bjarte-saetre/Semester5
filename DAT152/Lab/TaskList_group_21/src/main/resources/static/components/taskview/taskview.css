@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    font-family: serif;
+    width: fit-content;
+}
+
+#message {
+    min-height: 2.5rem;
+}
+
+#newtask {
+    margin-bottom: 12px;
+}

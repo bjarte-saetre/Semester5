@@ -37,22 +37,30 @@ class TaskBox extends HTMLElement {
         this.closeButton = this.shadowRoot.querySelector("#close");
         this.newtaskCallbacks = [];
 
-        /*
-         * TODO:
-         * 1. Add a click listener to closeButton that calls this.close().
-         * 2. Add a click listener to addButton.
-         * 3. In the add listener, validate that the title is not empty.
-         * 4. Create {title: ..., status: ...} from the input elements.
-         * 5. Run every callback in this.newtaskCallbacks with that object.
-         *
-         * Do not send an Ajax request here. TaskView receives the new task
-         * through the callback and communicates with the server.
-         */
+        this.closeButton.addEventListener("click", () => {
+            this.close()
+        });
+        this.addButton.addEventListener("click", () => {
+            const title = this.titleInput.value.trim();
+
+            if (title === "") {
+                window.alert("You must enter a task title.");
+                this.titleInput.focus();
+                return;
+            }
+            const task = {title: title, status: this.statusSelect.value};
+
+            for (const callback of this.newtaskCallbacks) {
+                callback(task);
+            }
+        });
     }
 
     /** Open the modal dialog. @public */
     show() {
-        // TODO: Clear old input, call showModal(), and focus the title field.
+        this.titleInput.value = "";
+        this.dialog.showModal();
+        this.titleInput.focus();
     }
 
     /**
@@ -62,7 +70,16 @@ class TaskBox extends HTMLElement {
      * @param {Array<string>} list
      */
     setStatuseslist(list) {
-        // TODO: Implement.
+
+        this.statusSelect.replaceChildren(); //fjerner alle eksisterende <option>-element
+
+        for (const status of list) {
+            const option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            this.statusSelect.append(option);
+        }
+
     }
 
     /**
@@ -71,12 +88,15 @@ class TaskBox extends HTMLElement {
      * @param {function({title: string, status: string}): void} callback
      */
     addNewtaskCallback(callback) {
-        // TODO: Implement.
+
+        this.newtaskCallbacks.push(callback);
+
+
     }
 
     /** Close the modal through the HTMLDialogElement API. @public */
     close() {
-        // TODO: Implement.
+        this.dialog.close();
     }
 }
 

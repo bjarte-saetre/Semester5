@@ -48,8 +48,44 @@ class TaskView extends HTMLElement {
      * 6. Fetch statuses before tasks, then enable New task.
      * 7. Handle errors through the message element.
      */
-    connectedCallback() {
-        // TODO: Implement.
+    async connectedCallback() {
+        if (this.initialized) {
+            return;
+        }
+
+        this.initialized = true;
+        this.serviceurl = this.dataset.serviceurl;
+
+        if (!this.serviceurl) {
+            this.showError("Missing data-serviceurl.");
+            return;
+        }
+
+        this.tasklist.addChangestatusCallback((id, newStatus) => {
+            this.changeTaskStatus(id, newStatus); //når statusen endres i tasklist
+        });
+
+        this.tasklist.addDeletetaskCallback((id) => {
+            this.deleteTask(id); //når en oppgave slettes
+        });
+
+        this.tasklist.addNewtaskCallback((task) => {
+            this.tasklist.addTask(task);
+        });
+
+        this.newTaskButton.addEventListener("click", () => {
+            this.taskbox.show();
+        });
+
+        try {
+            await this.loadStatuses();
+            await this.loadTasks();
+
+            this.newTaskButton.disabled = false;
+            this.updateMessage();
+        } catch(error) {
+            this.showError(`Could not load data: ${error.message}`);
+        }
     }
 
     /**
@@ -57,7 +93,20 @@ class TaskView extends HTMLElement {
      * On responseStatus=true, pass allstatuses to both child components.
      */
     async loadStatuses() {
-        // TODO: Implement with fetch and async/await.
+        const response = await fetch(`${this.serviceurl}/allstatuses`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.responseStatus) {
+            throw new Error("The server could not return the statuses.");
+        }
+
+        this.tasklist.setStatuseslist(data.allstatuses);
+        this.taskbox.setStatuseslist(data.allstatuses);
     }
 
     /**
@@ -65,7 +114,21 @@ class TaskView extends HTMLElement {
      * On responseStatus=true, call tasklist.showTask for every returned task.
      */
     async loadTasks() {
-        // TODO: Implement with fetch and async/await.
+        const respone = await fetch(`${this.serviceurl}/tasklist`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.responseStatus) {
+            throw new Error("The server could not return the tasks.");
+        }
+
+        for (const task of data.tasks) {
+            this.tasklist.showTask(task);
+        }
     }
 
     /**
@@ -74,7 +137,31 @@ class TaskView extends HTMLElement {
      * @param {{title: string, status: string}} task
      */
     async addTask(task) {
-        // TODO: Implement with fetch and async/await.
+        try {
+            const response = await fetch(`${this.serviceurl}/task`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(task) //JavaScript-objektet om til JSON-tekst.
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.responseStatus || !data.task) {
+                throw new Error("The server could not add the task.");
+            }
+
+            this.tasklist.showTask(data.task);
+            this.taskbox.close();
+            this.updateMessage();
+        } catch (error) {
+            this.showError(`Could not add task: ${error.message}`);
+        }
     }
 
     /**
@@ -84,7 +171,36 @@ class TaskView extends HTMLElement {
      * @param {string} newStatus
      */
     async changeTaskStatus(id, newStatus) {
-        // TODO: Implement with fetch and async/await.
+
+        try {
+            const response = await fetch(`${this.serviceurl}/task${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    status:newStatus
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.responseStatus || !data.task) {
+                throw new Error("The server could not change the status.");
+            }
+
+            this.tasklist.updateTask({
+                id: data.id,
+                status: data.status
+            });
+        } catch (error) {
+            this.showError(`Could not change task status: ${error.message}`);
+        }
+
     }
 
     /**
@@ -93,7 +209,29 @@ class TaskView extends HTMLElement {
      * @param {number} id
      */
     async deleteTask(id) {
-        // TODO: Implement with fetch and async/await.
+
+        try {
+            const response = await fetch(`${this.serviceurl}/task${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.responseStatus || !data.task) {
+                throw new Error("The server could not delete the task.");
+            }
+
+            this.tasklist.removeTask(data.id);
+            this.updateMessage();
+
+        } catch (error) {
+            this.showError(`Could not delete task: ${error.message}`);
+        }
+
     }
 
     /**
@@ -101,12 +239,28 @@ class TaskView extends HTMLElement {
      * otherwise "Found N task(s).". Insert dynamic text with textContent.
      */
     updateMessage() {
-        // TODO: Implement.
+
+        const numberOfTasks = this.tasklist.getNumtasks();
+
+        if (numberOfTasks === 0) {
+            this.messageElement.textContent = "No tasks were found.";
+            return;
+        }
+
+        let taskWord = "tasks";
+
+        if (numberOfTasks === 1) {
+            taskWord = "task";
+        }
+
+        this.messageElement.textContent =
+            `Found ${numberOfTasks} ${taskWord}.`;
+
     }
 
     /** @param {string} message */
     showError(message) {
-        // TODO: Show a readable error using textContent.
+        this.messageElement.textContent = message;
     }
 }
 

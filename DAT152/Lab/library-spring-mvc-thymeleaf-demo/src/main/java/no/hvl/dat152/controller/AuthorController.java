@@ -40,6 +40,6 @@ public class AuthorController {
 
         authorService.saveAuthor(author);
 
-        return "redirect:index";
+        return "redirect:/";
     }
 }

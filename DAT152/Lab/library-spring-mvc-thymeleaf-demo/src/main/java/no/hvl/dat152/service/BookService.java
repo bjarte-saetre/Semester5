@@ -80,8 +80,10 @@ public class BookService {
 	 * @throws BookNotFoundException
 	 */
 	public void deleteBookById(long id) throws BookNotFoundException {
-		
-		// TODO
+
+		if (bookRepository.findById(id) != null) {
+            bookRepository.deleteById(id);
+        }
 
 	}
 	

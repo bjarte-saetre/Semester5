@@ -21,13 +21,6 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    @GetMapping("/")
-    public String defaultView() {
-
-        return "index";
-
-    }
-
     @GetMapping("/addauthor")
     public String create() {
         return "addauthor";

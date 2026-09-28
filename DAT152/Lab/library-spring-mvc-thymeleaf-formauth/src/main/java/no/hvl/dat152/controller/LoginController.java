@@ -11,10 +11,4 @@ public class LoginController {
     public String showLogin(){
         return "login";
     }
-
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
-
-    }
-
 }

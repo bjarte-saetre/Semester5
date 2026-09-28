@@ -21,9 +21,15 @@
         </form>
 	<div>
 		<p>
-			<a href="/viewbooks">View Books</a> | 
-			<a href="/addbook">Add Book</a> | 
-			<a href="/addauthor">Add Author</a>
+        <p>
+            <a th:href="@{/}">Home</a> |
+            <a th:href="@{/viewbooks}">View Books</a>
+
+            <span sec:authorize="hasRole('ADMIN')">
+        | <a th:href="@{/addbook}">Add Book</a>
+        | <a th:href="@{/addauthor}">Add Author</a>
+    </span>
+        </p>
 		</p>
 		
 	</div>

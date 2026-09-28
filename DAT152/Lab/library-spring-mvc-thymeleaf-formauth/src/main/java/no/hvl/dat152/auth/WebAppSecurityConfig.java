@@ -25,18 +25,38 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebAppSecurityConfig {
 
-	
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	    http
-	        .formLogin(Customizer.withDefaults()) // Use default form login
-	        .authorizeHttpRequests(authorize -> authorize
-	        	.requestMatchers("/", "/css/**").permitAll() // Allow public pages
-	            .anyRequest().authenticated() // All other requests require authentication
-	        );
 
-	    return http.build();
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/", "/login", "/css/**").permitAll()
+                        .requestMatchers(
+                                "/addbook",
+                                "/addauthor",
+                                "/updatebook",
+                                "/deletebook"
+                        ).hasRole("ADMIN")
+                        .requestMatchers(
+                                "/viewbooks",
+                                "/viewbook"
+                        ).hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
+
+        return http.build();
+    }
     
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -45,7 +45,7 @@ public class LibraryExceptionHandler {
 	@ExceptionHandler(value = UpdateBookFailedException.class)
 	public ResponseEntity<String> updateBookFailed(UpdateBookFailedException ex) {
 		
-		return new ResponseEntity<>("An error occured: " + ex.getMessage(), HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<>("An error occured: " + ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 	
 	/**

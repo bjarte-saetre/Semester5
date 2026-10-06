@@ -1,6 +1,3 @@
-/**
- * 
- */
 package no.hvl.dat152.rest.ws.service;
 
 import java.util.List;
@@ -17,45 +14,43 @@ import no.hvl.dat152.rest.ws.model.Author;
 import no.hvl.dat152.rest.ws.model.Book;
 import no.hvl.dat152.rest.ws.repository.BookRepository;
 
-/**
- * @author tdoy
- */
 @Service
 public class BookService {
 
-	@Autowired
-	private BookRepository bookRepository;
-	
-	
-	public Book saveBook(Book book) {
-		
-		return bookRepository.save(book);
-		
-	}
-	
-	public List<Book> findAll(){
-		
-		return (List<Book>) bookRepository.findAll();
-		
-	}
-	
-	
-	public Book findByISBN(String isbn) throws BookNotFoundException {
-		
-		Book book = bookRepository.findByIsbn(isbn)
-				.orElseThrow(() -> new BookNotFoundException("Book with isbn = "+isbn+" not found!"));
-		
-		return book;
-	}
-	
-	// TODO public Book updateBook(Book book, String isbn)
-	
-	// TODO public List<Book> findAllPaginate(Pageable page)
-	
-	// TODO public Set<Author> findAuthorsOfBookByISBN(String isbn)
-	
-	// TODO public void deleteById(long id)
-	
-	// TODO public void deleteByISBN(String isbn) 
-	
+    @Autowired
+    private BookRepository bookRepository;
+
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public List<Book> findAll() {
+        return (List<Book>) bookRepository.findAll();
+    }
+
+    public Book findByISBN(String isbn) throws BookNotFoundException {
+        return bookRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new BookNotFoundException(
+                        "Book with isbn = " + isbn + " not found!"));
+    }
+
+    public Book updateBook(Book book, String isbn) throws UpdateBookFailedException {
+        Book existingBook = bookRepository.findByIsbn(isbn)
+                .orElseThrow(() -> new UpdateBookFailedException(
+                        "Book with isbn = " + isbn + " could not be updated!"));
+        existingBook.setTitle(book.getTitle());
+        existingBook.setAuthors(book.getAuthors());
+        return bookRepository.save(existingBook);
+    }
+
+    // TODO public List<Book> findAllPaginate(Pageable page)
+
+    // TODO public Set<Author> findAuthorsOfBookByISBN(String isbn)
+
+    // TODO public void deleteById(long id)
+
+    public void deleteByISBN(String isbn) throws BookNotFoundException {
+        Book book = findByISBN(isbn);
+        bookRepository.delete(book);
+    }
 }

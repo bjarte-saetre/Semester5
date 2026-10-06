@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import no.hvl.dat152.rest.ws.exceptions.AuthorNotFoundException;
 import no.hvl.dat152.rest.ws.model.Author;
 import no.hvl.dat152.rest.ws.service.AuthorService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/elibrary/api/v1")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AuthorController {
 
     // TODO Task 3: add endpoint access rules with @PreAuthorize.

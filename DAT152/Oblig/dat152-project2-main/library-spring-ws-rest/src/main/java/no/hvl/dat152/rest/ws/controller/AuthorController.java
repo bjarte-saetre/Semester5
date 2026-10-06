@@ -1,6 +1,8 @@
 package no.hvl.dat152.rest.ws.controller;
 
 import java.util.List;
+import no.hvl.dat152.rest.ws.model.Book;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,12 @@ public class AuthorController {
         return new ResponseEntity<>(authorService.findById(id), HttpStatus.OK);
     }
 
-    // TODO - getBooksByAuthorId (@Mappings, URI, and method)
+    @GetMapping("/authors/{id}/books")
+    public ResponseEntity<Set<Book>> getBooksByAuthorId(@PathVariable int id)
+            throws AuthorNotFoundException {
+        Set<Book> books = authorService.findBooksByAuthorId(id);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
 
     @PostMapping("/authors")
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {

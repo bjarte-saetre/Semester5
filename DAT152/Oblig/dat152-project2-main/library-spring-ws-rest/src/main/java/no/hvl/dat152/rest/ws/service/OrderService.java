@@ -44,8 +44,12 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 	
-	public List<Order> findAllOrders() throws OrderNotFoundException {
+	public List<Order> findAllOrders() {
         return orderRepository.findAll();
+    }
+
+    public List<Order> findAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable).getContent();
     }
 	
 	public List<Order> findByExpiryDate(LocalDate expiry, Pageable page) {

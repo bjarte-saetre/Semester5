@@ -25,6 +25,7 @@ import no.hvl.dat152.rest.ws.exceptions.UserNotFoundException;
 import no.hvl.dat152.rest.ws.model.Order;
 import no.hvl.dat152.rest.ws.model.User;
 import no.hvl.dat152.rest.ws.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * @author tdoy
@@ -37,7 +38,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping("/users")
 	public ResponseEntity<Object> getUsers(){
 		
@@ -49,7 +51,8 @@ public class UserController {
 		else
 			return new ResponseEntity<>(users, HttpStatus.OK);
 	}
-	
+
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
 	@GetMapping(value = "/users/{id}")
 	public ResponseEntity<Object> getUser(@PathVariable Long id) throws UserNotFoundException, OrderNotFoundException{
 		
@@ -58,6 +61,7 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
 
@@ -66,6 +70,7 @@ public class UserController {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) throws UserNotFoundException {
 
@@ -75,6 +80,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) throws UserNotFoundException {
 
@@ -83,6 +89,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @GetMapping("/users/{id}/orders")
     public ResponseEntity<Object> getUserOrders(@PathVariable Long id) throws UserNotFoundException {
 
@@ -91,6 +98,7 @@ public class UserController {
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @GetMapping("/users/{id}/orders/{oid}")
     public ResponseEntity<Order> getUserOrder(@PathVariable Long id, @PathVariable Long oid) throws UserNotFoundException, OrderNotFoundException {
 
@@ -100,6 +108,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @DeleteMapping("/users/{id}/orders/{oid}")
     public ResponseEntity<Void> deleteUserOrder(@PathVariable Long id, @PathVariable Long oid) throws UserNotFoundException, OrderNotFoundException {
 
@@ -109,6 +118,7 @@ public class UserController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or #p0 == authentication.details.userid")
     @PostMapping("/users/{id}/orders")
     public ResponseEntity<Set<Order>> createUserOrder(@PathVariable Long id, @RequestBody Order order) throws UserNotFoundException {
 

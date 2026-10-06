@@ -31,12 +31,14 @@ import no.hvl.dat152.rest.ws.model.Order;
 import no.hvl.dat152.rest.ws.service.OrderService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * @author tdoy
  */
 @RestController
 @RequestMapping("/elibrary/api/v1")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class OrderController {
 
     // TODO Task 3: add endpoint access rules with @PreAuthorize.

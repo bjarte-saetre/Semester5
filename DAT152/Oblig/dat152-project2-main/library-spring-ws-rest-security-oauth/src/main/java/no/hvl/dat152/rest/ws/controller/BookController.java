@@ -20,9 +20,11 @@ import no.hvl.dat152.rest.ws.exceptions.BookNotFoundException;
 import no.hvl.dat152.rest.ws.exceptions.UpdateBookFailedException;
 import no.hvl.dat152.rest.ws.model.Book;
 import no.hvl.dat152.rest.ws.service.BookService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/elibrary/api/v1")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class BookController {
 
     // TODO Task 3: add endpoint access rules with @PreAuthorize.

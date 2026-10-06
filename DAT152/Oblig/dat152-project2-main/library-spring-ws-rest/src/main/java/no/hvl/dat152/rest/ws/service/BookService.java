@@ -1,6 +1,8 @@
 package no.hvl.dat152.rest.ws.service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,11 @@ public class BookService {
 
     // TODO public List<Book> findAllPaginate(Pageable page)
 
-    // TODO public Set<Author> findAuthorsOfBookByISBN(String isbn)
+    @Transactional(readOnly = true)
+    public Set<Author> findAuthorsOfBookByISBN(String isbn) throws BookNotFoundException {
+        Book book = findByISBN(isbn);
+        return new HashSet<>(book.getAuthors());
+    }
 
     // TODO public void deleteById(long id)
 

@@ -39,12 +39,30 @@ public class OrderService {
 		return order;
 	}
 	
-	// TODO public void deleteOrder(Long id)
+	public void deleteOrder(Long id) throws OrderNotFoundException {
+        findOrder(id); //sjekker om ordren finnes
+        orderRepository.deleteById(id);
+    }
 	
-	// TODO public List<Order> findAllOrders()
+	public List<Order> findAllOrders() throws OrderNotFoundException {
+        return orderRepository.findAll();
+    }
 	
-	// TODO public List<Order> findByExpiryDate(LocalDate expiry, Pageable page)
+	public List<Order> findByExpiryDate(LocalDate expiry, Pageable page) {
+        return orderRepository.findByExpiryBefore(expiry.plusDays(1), page).getContent();
+    }
 	
-	// TODO public Order updateOrder(Order order, Long id)
+	public Order updateOrder(Order order, Long id) throws OrderNotFoundException {
+        Order existingOrder = findOrder(id);
 
+        if (order.getIsbn() != null) {
+            existingOrder.setIsbn(order.getIsbn());
+        }
+
+        if (order.getExpiry() != null) {
+            existingOrder.setExpiry(order.getExpiry());
+        }
+        return orderRepository.save(existingOrder);
+
+    }
 }

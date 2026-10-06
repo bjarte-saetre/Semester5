@@ -24,7 +24,7 @@ public class AuthorController {
     private AuthorService authorService;
 
 	@GetMapping("/elibrary/api/v1/authors")
-    public ResponseEntity<Author> getAllAuthors() {
+    public ResponseEntity<Object> getAllAuthors() {
         List<Author> authors = authorService.findAll();
 
         if (authors.isEmpty()) {

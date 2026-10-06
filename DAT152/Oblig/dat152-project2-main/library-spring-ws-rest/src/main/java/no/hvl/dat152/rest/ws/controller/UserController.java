@@ -81,7 +81,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{id}/orders")
     public ResponseEntity<Object> getUserOrders(@PathVariable Long id) throws UserNotFoundException {
 
         Set<Order> orders = userService.getUserOrders(id);
@@ -107,11 +107,18 @@ public class UserController {
 
     }
 
-    @PostMapping("/users/{id}/orders/{oid}")
+    @PostMapping("/users/{id}/orders")
     public ResponseEntity<Set<Order>> createUserOrder(@PathVariable Long id, @RequestBody Order order) throws UserNotFoundException {
 
         userService.createOrdersForUser(id, order);
         Set<Order> orders = userService.getUserOrders(id);
+
+        for (Order savedOrder : orders) {
+            savedOrder.add(
+                    linkTo(OrderController.class).slash("orders").slash(savedOrder.getId()).withSelfRel(),
+                    linkTo(UserController.class).slash("users").slash(id).slash("orders").withRel("user-orders")
+            );
+        }
 
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
 

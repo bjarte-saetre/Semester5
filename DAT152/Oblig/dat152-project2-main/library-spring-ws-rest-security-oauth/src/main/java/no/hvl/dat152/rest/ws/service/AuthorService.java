@@ -25,6 +25,13 @@ public class AuthorService {
                         "Author with the id: " + id + " not found!"));
     }
 
+    public Author findById(long id) throws AuthorNotFoundException {
+        if (id < 0 || id > Integer.MAX_VALUE) {
+            throw new AuthorNotFoundException("Author with the id: " + id + " not found!");
+        }
+        return findById((int) id);
+    }
+
     public Author saveAuthor(Author author) {
         return authorRepository.save(author);
     }
